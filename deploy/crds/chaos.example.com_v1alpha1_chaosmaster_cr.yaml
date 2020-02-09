@@ -1,0 +1,7 @@
+apiVersion: chaos.example.com/v1alpha1
+kind: Chaosmaster
+metadata:
+  name: example-chaosmaster
+spec:
+  # Add fields here
+  size: 3
