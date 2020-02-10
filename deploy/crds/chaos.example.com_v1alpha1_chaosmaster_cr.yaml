@@ -1,0 +1,11 @@
+apiVersion: chaos.example.com/v1alpha1
+kind: Chaosmaster
+metadata:
+  name: example-chaosmaster
+spec:
+  # Add fields here
+  size: 3
+  AppId: "1234567"
+  BlastRadius: 1
+  ChaosType: "killpod"
+  ServiceName: "testapp"
