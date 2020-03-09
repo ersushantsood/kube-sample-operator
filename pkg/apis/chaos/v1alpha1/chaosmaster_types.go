@@ -15,6 +15,7 @@ type ChaosmasterSpec struct {
 	BlastRadius int32 `json:"BlastRadius"`
 	ChaosType string `json:"ChaosType"`
 	ServiceName string `json:"ServiceName"`
+	Platform string `json:"Platform"`
 	AppId string `json:"AppId"`
 
 }

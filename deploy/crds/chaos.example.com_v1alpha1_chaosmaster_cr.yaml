@@ -7,5 +7,6 @@ spec:
   size: 3
   AppId: "1234567"
   BlastRadius: 1
+  Platform: "kubernetes"
   ChaosType: "killpod"
   ServiceName: "testapp"

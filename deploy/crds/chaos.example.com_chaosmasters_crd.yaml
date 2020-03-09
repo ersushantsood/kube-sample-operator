@@ -42,12 +42,15 @@ spec:
               type: integer
             ChaosType:
               type: string
+            Platform:
+              type: string
             ServiceName:
               type: string
           required:
           - AppId
           - BlastRadius
           - ChaosType
+          - Platform
           - ServiceName
           type: object
         status:

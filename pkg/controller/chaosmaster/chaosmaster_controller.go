@@ -88,6 +88,8 @@ func (r *ReconcileChaosmaster) Reconcile(request reconcile.Request) (reconcile.R
 
 	// Fetch the Chaosmaster instance
 	instance := &chaosv1alpha1.Chaosmaster{}
+	reqLogger.Info("Received Custom Resource with ChaosType ",instance.Spec.ChaosType)
+
 	err := r.client.Get(context.TODO(), request.NamespacedName, instance)
 	if err != nil {
 		if errors.IsNotFound(err) {
@@ -100,6 +102,10 @@ func (r *ReconcileChaosmaster) Reconcile(request reconcile.Request) (reconcile.R
 		return reconcile.Result{}, err
 	}
 
+    if instance.Spec.ChaosType == "cpu spike" {
+        cpucpikepod := newPodForCPUSpike(instance)
+        r.client.
+    }
 	// Define a new Pod object
 	pod := newPodForCR(instance)
 
@@ -117,6 +123,9 @@ func (r *ReconcileChaosmaster) Reconcile(request reconcile.Request) (reconcile.R
 		if err != nil {
 			return reconcile.Result{}, err
 		}
+
+    //injecting pod inside the nginx pod
+
 
 		// Pod created successfully - don't requeue
 		return reconcile.Result{}, nil
@@ -151,3 +160,27 @@ func newPodForCR(cr *chaosv1alpha1.Chaosmaster) *corev1.Pod {
 		},
 	}
 }
+// new pod injection for failure injection for cpu spike chaos type
+func newPodForCPUSpike(cr *chaosv1alpha1.Chaosmaster) *corev1.Pod {
+    labels := map[string]string {
+        "app": cr.ChaosType,
+    }
+    return &corev1.Pod{
+        ObjectMeta: metav1.ObjectMeta{
+            Name:   cr.ChaosType + "-pod",
+            Namespace: cr.Namespace,
+            Labels: labels,
+        },
+        Spec: corev1.PodSpec{
+            Containers: []corev1.Container{
+                {
+                    Name: "busybox",
+                    Image: "busybox",
+                    Command: []string{"sleep","3600"},
+                },
+            },
+        },
+    }
+
+}
+
