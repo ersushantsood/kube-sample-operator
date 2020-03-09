@@ -104,7 +104,7 @@ func (r *ReconcileChaosmaster) Reconcile(request reconcile.Request) (reconcile.R
 
     if instance.Spec.ChaosType == "cpu spike" {
         cpucpikepod := newPodForCPUSpike(instance)
-        r.client.
+        reqLogger.Info("Injecting a chaos type",instance.Spec.ChaosType,"Pod Name ",cpucpikepod.Name)
     }
 	// Define a new Pod object
 	pod := newPodForCR(instance)
@@ -162,12 +162,12 @@ func newPodForCR(cr *chaosv1alpha1.Chaosmaster) *corev1.Pod {
 }
 // new pod injection for failure injection for cpu spike chaos type
 func newPodForCPUSpike(cr *chaosv1alpha1.Chaosmaster) *corev1.Pod {
-    labels := map[string]string {
-        "app": cr.ChaosType,
+    labels := map[string]string{
+        "app": cr.Spec.ChaosType,
     }
     return &corev1.Pod{
         ObjectMeta: metav1.ObjectMeta{
-            Name:   cr.ChaosType + "-pod",
+            Name:   cr.Spec.ChaosType + "-pod",
             Namespace: cr.Namespace,
             Labels: labels,
         },
