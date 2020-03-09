@@ -88,7 +88,7 @@ func (r *ReconcileChaosmaster) Reconcile(request reconcile.Request) (reconcile.R
 
 	// Fetch the Chaosmaster instance
 	instance := &chaosv1alpha1.Chaosmaster{}
-	reqLogger.Info("Received Custom Resource with ChaosType ",instance.Spec.ChaosType)
+	reqLogger.Info("Received Custom Resource with ChaosType ","Request.Name",instance.Spec.ChaosType)
 
 	err := r.client.Get(context.TODO(), request.NamespacedName, instance)
 	if err != nil {
@@ -104,7 +104,7 @@ func (r *ReconcileChaosmaster) Reconcile(request reconcile.Request) (reconcile.R
 
     if instance.Spec.ChaosType == "cpu spike" {
         cpucpikepod := newPodForCPUSpike(instance)
-        reqLogger.Info("Injecting a chaos type",instance.Spec.ChaosType,"Pod Name ",cpucpikepod.Name)
+        reqLogger.Info("Injecting a chaos type","Pod.Namespace",instance.Spec.ChaosType,"Pod.Name",cpucpikepod.Name)
     }
 	// Define a new Pod object
 	pod := newPodForCR(instance)
